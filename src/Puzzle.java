@@ -18,6 +18,7 @@ public class Puzzle {
     private ArrayList state = new ArrayList();
     //Movements will be applied on the state list
     private final int columns, rows;
+    int[][] tileSet;
     
     public Puzzle(){
         this.columns = this.rows = 4;
@@ -30,6 +31,15 @@ public class Puzzle {
     
     
     public void initialState(){
+        int counter=0;
+        tileSet = new int[4][4];
+        for(int i=0;i<=3;i++){
+            for(int j=0;j<=3;j++){
+                tileSet[i][j]=counter;
+                counter++;
+            }
+        }
+        
         
         for(int i=0;i<=15;i++){
             initialState.add(new Tile(i));
@@ -49,13 +59,16 @@ public class Puzzle {
         boolean movementUnperformed = true;
         int[] positions = {-4,-1,1,4};
         for(int i=0;i<=3;i++){
+            
             if(movementUnperformed){
                 if(indexInsideBounds(index,positions[i])){
                 Tile tile =  (Tile)state.get(index+positions[i]);
                 if(tile.isLastButton()){
-                System.out.println("Movement done"+index);
                 tile.updateIndex(index);
+                tile.setNoLastButton();
                 Tile tile2 = (Tile)state.get(index);
+                tile2.updateIndex(index+positions[i]);
+                tile2.setLastButton();
                 tile2.updateIndex(index+positions[i]);
                 Collections.swap(state, index, index+positions[i]);
                 movementUnperformed=false;
@@ -66,6 +79,28 @@ public class Puzzle {
     }
     
     public boolean indexInsideBounds(int index,int position){
-        return (index+position >=0 && index+position<=15);
+        
+        
+        if(index+position >=0 && index+position<=15){
+            for(int i=0;i<=3;i++){
+                for(int j=0;j<=3;j++){
+                    if(tileSet[i][j]==index){
+                        switch(position){
+                            case -4:
+                                return i-1>0;
+                            case -1:
+                                return j-1>0;
+                            case 1:
+                                return j+1<4;
+                            case 4:
+                                return i+1<4;
+                        }
+                               
+                    } 
+                }
+            }
+        }
+        
+        return false;
     }
 }

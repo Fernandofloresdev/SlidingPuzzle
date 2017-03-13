@@ -66,6 +66,10 @@ class Tile extends JButton {
         isLastButton = true;
     }
 
+    public void setNoLastButton(){
+        isLastButton = false;
+    }
+    
     public boolean isLastButton() {
 
         return isLastButton;

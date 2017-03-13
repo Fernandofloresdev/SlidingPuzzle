@@ -34,8 +34,6 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
         initAssets();
-        
-        
     }
 
     /**
@@ -149,6 +147,7 @@ public class GUI extends javax.swing.JFrame {
                     tile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gamecontroller.getPuzzle().checkMovement(tile.getIndex());
+                update();
             }
         });
             }
@@ -179,11 +178,12 @@ public class GUI extends javax.swing.JFrame {
             Tile tile = (Tile)initialState.get(i);
             if(i==15){
                 tile.setContentAreaFilled(false);
+                System.out.println("aqui");
             } else{tile.setText(Integer.toString(i));}
             
             getjPanel1().add(tile);
-            
         }
+        getjPanel1().validate();
     }
     
     public void update(){
@@ -194,19 +194,21 @@ public class GUI extends javax.swing.JFrame {
         for(int i=0;i<=puzzleState.size()-1;i++){
             
             Tile tile = (Tile)puzzleState.get(i);
-            if(i==15){
+            if(tile.isLastButton()){
                 tile.setContentAreaFilled(false);
-                tile.setLastButton();
             } else{tile.setText(Integer.toString(tile.getId()));
                     tile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gamecontroller.getPuzzle().checkMovement(tile.getIndex());
+                update();
             }
         });
             }
             
             getjPanel1().add(tile);
         }
+        
+        getjPanel1().validate();
     }
     
   
