@@ -9,10 +9,21 @@
  * @author Fernando
  */
 public class GameController {
-    private boolean gameState;
+    private boolean gameState=false;
     private int gameResult;
-    
+    Puzzle puzzle;
 
+    public GameController(){
+        onGameInit();
+    }
+    
+    public void onGameInit(){
+        puzzle = new Puzzle();
+        puzzle.initialState();
+        gameState=true;
+        System.out.println("Nuevo Juego Iniciado");
+    }
+    
     public boolean isGameState() {
         return gameState;
     }
@@ -22,7 +33,7 @@ public class GameController {
     }
     
     public void startNewGame(){
-        
+        onGameInit();
     }
     
     public void abandonGame(){
@@ -32,4 +43,10 @@ public class GameController {
     public void restartGame(){
         
     }
+
+    public Puzzle getPuzzle() {
+        return puzzle;
+    }
+    
+    
 }

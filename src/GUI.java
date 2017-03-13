@@ -25,11 +25,9 @@ import javax.swing.JPanel;
  */
 public class GUI extends javax.swing.JFrame {
 
-    private Image image;
     private int width, height;
     private final int DESIRED_WIDTH = 600;
-    private BufferedImage resized;
-    private BufferedImage source;
+    private GameController gamecontroller = new GameController();
     /**
      * Creates new form GUI
      */
@@ -87,6 +85,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        gamecontroller.startNewGame();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -115,7 +114,7 @@ public class GUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        boolean playing = true;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -136,14 +135,48 @@ public class GUI extends javax.swing.JFrame {
         //setResizable(false);
         setLocationRelativeTo(null);
         
-        //Creates a new Puzzle 
-        Puzzle puzzle = new Puzzle();
-        puzzle.initialState();
-        ArrayList puzzleState = puzzle.getState();
+        ArrayList puzzleState = gamecontroller.getPuzzle().getState();
         
+        getjPanel1().removeAll();
+        //sets the buttons on its place 
         for(int i=0;i<=puzzleState.size()-1;i++){
             
             Tile tile = (Tile)puzzleState.get(i);
+            if(i==15){
+                tile.setContentAreaFilled(false);
+                tile.setLastButton();
+            } else{tile.setText(Integer.toString(tile.getId()));
+                    tile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gamecontroller.getPuzzle().checkMovement(tile.getIndex());
+            }
+        });
+            }
+            
+            getjPanel1().add(tile);
+        }
+    }
+
+    public JPanel getjPanel1() {
+        return jPanel1;
+    }
+    
+    public void displayBoard(){
+        
+    }
+    
+    public void displaySolution(){
+        
+    }
+    
+    public void displayInitialState(){
+        
+        getjPanel1().removeAll();
+        ArrayList initialState = gamecontroller.getPuzzle().getInitialState();
+        
+        for(int i=0;i<=initialState.size()-1;i++){
+            
+            Tile tile = (Tile)initialState.get(i);
             if(i==15){
                 tile.setContentAreaFilled(false);
             } else{tile.setText(Integer.toString(i));}
@@ -151,29 +184,30 @@ public class GUI extends javax.swing.JFrame {
             getjPanel1().add(tile);
             
         }
-        
-        
-        /*for(int i = 0; i<=15;i++){
-            
-            JButton but = new JButton();
-            
-            if(i==15){
-                but.setContentAreaFilled(false);
-            } else{but.setText(Integer.toString(i));}
-            
-            but.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //Añadir la accion del boton
-            }
-        });
-            
-        }*/
-    }
-
-    public JPanel getjPanel1() {
-        return jPanel1;
     }
     
+    public void update(){
+        ArrayList puzzleState = gamecontroller.getPuzzle().getState();
+        
+        getjPanel1().removeAll();
+        //sets the buttons on its place 
+        for(int i=0;i<=puzzleState.size()-1;i++){
+            
+            Tile tile = (Tile)puzzleState.get(i);
+            if(i==15){
+                tile.setContentAreaFilled(false);
+                tile.setLastButton();
+            } else{tile.setText(Integer.toString(tile.getId()));
+                    tile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gamecontroller.getPuzzle().checkMovement(tile.getIndex());
+            }
+        });
+            }
+            
+            getjPanel1().add(tile);
+        }
+    }
     
   
     

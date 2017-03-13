@@ -20,12 +20,11 @@ import javax.swing.JButton;
 class Tile extends JButton {
 
     private boolean isLastButton;
-    private int x,y;
+    private int x,y,id,index;
 
-    public Tile() {
-
+    public Tile(int id) {
         super();
-
+        this.id=this.index=id;
         initUI();
     }
 
@@ -58,6 +57,8 @@ class Tile extends JButton {
                 setBorder(BorderFactory.createLineBorder(Color.gray));
             }
         });
+        
+        
     }
 
     public void setLastButton() {
@@ -69,4 +70,19 @@ class Tile extends JButton {
 
         return isLastButton;
     }
+
+    public int getId() {
+        return id;
+    }
+    
+    public void updateIndex(int index){
+        this.index=index;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+    
+    
+    
 }
