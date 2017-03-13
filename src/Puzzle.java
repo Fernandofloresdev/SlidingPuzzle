@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class Puzzle {
     private ArrayList initialState = new ArrayList();
+    private ArrayList state = new ArrayList();
+    //Movements will be applied on the state list
     private final int columns, rows;
     
     public Puzzle(){
@@ -26,13 +28,18 @@ public class Puzzle {
     }
     
     
-    public void InitialState(){
+    public void initialState(){
         
         for(int i=0;i<=3;i++){
             for(int j=0;j<=3;j++){
-                initialState.add(new Point(i,j));
+                initialState.add(new Tile());
             }
         }
+        state=initialState;
+    }
+    
+    public ArrayList getState(){
+        return state;
     }
     
     

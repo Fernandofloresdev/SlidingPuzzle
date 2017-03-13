@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -134,7 +135,25 @@ public class GUI extends javax.swing.JFrame {
         setTitle("Puzzle");
         //setResizable(false);
         setLocationRelativeTo(null);
-        for(int i = 0; i<=15;i++){
+        
+        //Creates a new Puzzle 
+        Puzzle puzzle = new Puzzle();
+        puzzle.initialState();
+        ArrayList puzzleState = puzzle.getState();
+        
+        for(int i=0;i<=puzzleState.size()-1;i++){
+            
+            Tile tile = (Tile)puzzleState.get(i);
+            if(i==15){
+                tile.setContentAreaFilled(false);
+            } else{tile.setText(Integer.toString(i));}
+            
+            getjPanel1().add(tile);
+            
+        }
+        
+        
+        /*for(int i = 0; i<=15;i++){
             
             JButton but = new JButton();
             
@@ -147,8 +166,8 @@ public class GUI extends javax.swing.JFrame {
                 //Añadir la accion del boton
             }
         });
-            getjPanel1().add(but);
-        }
+            
+        }*/
     }
 
     public JPanel getjPanel1() {

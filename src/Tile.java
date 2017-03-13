@@ -8,6 +8,7 @@
  *
  * @author Fernando 
  */
+
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -16,22 +17,28 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-class ImageButton extends JButton {
+class Tile extends JButton {
 
     private boolean isLastButton;
+    private int x,y;
 
-    public ImageButton() {
+    public Tile() {
 
         super();
 
         initUI();
     }
 
-    public ImageButton(Image image) {
+    public Tile(Image image) {
 
         super(new ImageIcon(image));
 
         initUI();
+    }
+    
+    public Tile(int x,int y){
+        this.x=x;
+        this.y=y;
     }
 
     private void initUI() {
