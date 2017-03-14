@@ -153,6 +153,7 @@ public class GUI extends javax.swing.JFrame {
             }
             
             getjPanel1().add(tile);
+            getjPanel1().validate();
         }
     }
 

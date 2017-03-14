@@ -19,6 +19,7 @@ public class Puzzle {
     //Movements will be applied on the state list
     private final int columns, rows;
     int[][] tileSet;
+    int[] positions = {-4,-1,1,4};
     
     public Puzzle(){
         this.columns = this.rows = 4;
@@ -56,23 +57,19 @@ public class Puzzle {
     }
     
     public void checkMovement(int index){
-        boolean movementUnperformed = true;
-        int[] positions = {-4,-1,1,4};
+        
         for(int i=0;i<=3;i++){
-            
-            if(movementUnperformed){
                 if(indexInsideBounds(index,positions[i])){
                 Tile tile =  (Tile)state.get(index+positions[i]);
+                System.out.println("aqui");
                 if(tile.isLastButton()){
-                tile.updateIndex(index);
-                tile.setNoLastButton();
-                Tile tile2 = (Tile)state.get(index);
-                tile2.updateIndex(index+positions[i]);
-                tile2.setLastButton();
-                tile2.updateIndex(index+positions[i]);
                 Collections.swap(state, index, index+positions[i]);
-                movementUnperformed=false;
-            }
+                tile.updateIndex(index);
+                Tile selectedTile = (Tile)state.get(index+positions[i]);
+                selectedTile.updateIndex(index+positions[i]);
+                
+                printPuzzleState();
+                System.out.println(index+positions[i]);
             }
         }
         }
@@ -80,20 +77,19 @@ public class Puzzle {
     
     public boolean indexInsideBounds(int index,int position){
         
-        
-        if(index+position >=0 && index+position<=15){
+        if(index+position >-1 && index+position<=16){
             for(int i=0;i<=3;i++){
                 for(int j=0;j<=3;j++){
                     if(tileSet[i][j]==index){
                         switch(position){
                             case -4:
-                                return i-1>0;
+                                return i-4>0;
                             case -1:
                                 return j-1>0;
                             case 1:
                                 return j+1<4;
                             case 4:
-                                return i+1<4;
+                                return i+4<4;
                         }
                                
                     } 
@@ -102,5 +98,17 @@ public class Puzzle {
         }
         
         return false;
+    }
+    
+    public void printPuzzleState(){
+        int count=0;
+        for(int i=0;i<=3;i++){
+            for(int j=0;j<=3;j++){
+                Tile tile = (Tile)state.get(count);
+                System.out.print(tile.isLastButton());
+                count++;
+            }
+            System.out.println("");
+        }
     }
 }
