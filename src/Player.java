@@ -24,5 +24,7 @@ public class Player {
     public void saveMovement(Move movement){
         movementsLog.add(movement);
     }
+    
+    
    
 }

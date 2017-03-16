@@ -18,9 +18,9 @@ public class Puzzle {
     private ArrayList state = new ArrayList();
     //Movements will be applied on the state list
     private final int columns, rows;
-    int[][] tileSet;
-    int[] positions = {-4,-1,1,4};
-    
+    Tile[][] tileSet;
+    int[] positions = {-1,-1,1,1};
+    int[] lastPositionMoved = {3,3};
     public Puzzle(){
         this.columns = this.rows = 4;
     }
@@ -33,70 +33,53 @@ public class Puzzle {
     
     public void initialState(){
         int counter=0;
-        tileSet = new int[4][4];
+        tileSet = new Tile[4][4];
         for(int i=0;i<=3;i++){
             for(int j=0;j<=3;j++){
-                tileSet[i][j]=counter;
+                tileSet[i][j]=new Tile(counter, i,j);
                 counter++;
             }
         }
         
         
-        for(int i=0;i<=15;i++){
-            initialState.add(new Tile(i));
+        /*for(int i=0;i<=15;i++){
+            initialState.add(new Tile(i,i));
         }
-        state=initialState;
+        state=initialState;*/
     }
     
-    public ArrayList getState(){
-        return state;
+    public Tile[][] getState(){
+        return tileSet;
     }
 
     public ArrayList getInitialState() {
         return initialState;
     }
     
-    public void checkMovement(int index){
+    public void checkMovement(int i, int j){
         
-        for(int i=0;i<=3;i++){
-                if(indexInsideBounds(index,positions[i])){
-                Tile tile =  (Tile)state.get(index+positions[i]);
-                System.out.println("aqui");
-                if(tile.isLastButton()){
-                Collections.swap(state, index, index+positions[i]);
-                tile.updateIndex(index);
-                Tile selectedTile = (Tile)state.get(index+positions[i]);
-                selectedTile.updateIndex(index+positions[i]);
-                
-                printPuzzleState();
-                System.out.println(index+positions[i]);
-            }
-        }
+        for(int k=0;k<=3;k++){
+                if(positionInsideBounds(i,j,k)){
+                        System.out.println(k);
+                        performMovement(i,j,k);
+                }
         }
     }
+        
     
-    public boolean indexInsideBounds(int index,int position){
+    public boolean positionInsideBounds(int i, int j,int k){
         
-        if(index+position >-1 && index+position<=16){
-            for(int i=0;i<=3;i++){
-                for(int j=0;j<=3;j++){
-                    if(tileSet[i][j]==index){
-                        switch(position){
-                            case -4:
-                                return i-4>0;
-                            case -1:
-                                return j-1>0;
-                            case 1:
-                                return j+1<4;
-                            case 4:
-                                return i+4<4;
-                        }
-                               
-                    } 
-                }
+            switch(k){
+                case 0:
+                    return i+positions[k]>=0;
+                case 1:
+                    return j+positions[k]>=0;
+                case 2:
+                    return i+positions[k]<=3;
+                case 3:
+                    return j+positions[k]<=3;
             }
-        }
-        
+            
         return false;
     }
     
@@ -104,11 +87,84 @@ public class Puzzle {
         int count=0;
         for(int i=0;i<=3;i++){
             for(int j=0;j<=3;j++){
-                Tile tile = (Tile)state.get(count);
-                System.out.print(tile.isLastButton());
+                System.out.print(i+""+j);
+                count++;
+            }
+            System.out.println("");
+        }
+        
+        for(int i=0;i<=3;i++){
+            for(int j=0;j<=3;j++){
+                System.out.print(tileSet[i][j].isLastButton());
                 count++;
             }
             System.out.println("");
         }
     }
+    
+    public void setState(Tile[][] state){
+        this.tileSet=state;
+    }
+    
+    
+    public void performMovement(int i, int j, int k){
+        
+        switch(k){
+            case 0:
+                if(tileSet[i+positions[k]][j].isLastButton()){
+                    tileSet[i][j].setNoLastButton();
+                    Tile tile = tileSet[i+positions[k]][j];
+                    tile.setLastButton();
+                    tileSet[i+positions[k]][j]=tileSet[i][j];
+                    tileSet[i][j]=tile;
+                    setLastPositionMoved(i,j);
+                    printPuzzleState();
+                }
+                break;
+            case 1:
+                if(tileSet[i][j+positions[k]].isLastButton()){
+                    tileSet[i][j].setNoLastButton();
+                    Tile tile = tileSet[i][j+positions[k]];
+                    tile.setLastButton();
+                    tileSet[i][j+positions[k]]=tileSet[i][j];
+                    tileSet[i][j]=tile;
+                    setLastPositionMoved(i,j);
+                    printPuzzleState();
+                }
+                break;
+            case 2:
+                if(tileSet[i+positions[k]][j].isLastButton()){
+                    tileSet[i][j].setNoLastButton();
+                    Tile tile = tileSet[i+positions[k]][j];
+                    tile.setLastButton();
+                    tileSet[i+positions[k]][j]=tileSet[i][j];
+                    tileSet[i][j]=tile;
+                    setLastPositionMoved(i,j);
+                    printPuzzleState();
+                }
+                break; 
+            case 3:
+                if(tileSet[i][j+positions[k]].isLastButton()){
+                    tileSet[i][j].setNoLastButton();
+                    Tile tile = tileSet[i][j+positions[k]];
+                    tile.setLastButton();
+                    tileSet[i][j+positions[k]]=tileSet[i][j];
+                    tileSet[i][j]=tile;
+                    setLastPositionMoved(i,j);
+                    printPuzzleState();
+                }
+                break;
+        }
+    }
+
+    public int[] getLastPositionMoved() {
+        return lastPositionMoved;
+    }
+
+    public void setLastPositionMoved(int i, int j) {
+        lastPositionMoved[0]=i;
+        lastPositionMoved[1]=j;
+    }
+    
+    
 }

@@ -19,12 +19,14 @@ import javax.swing.JButton;
 
 class Tile extends JButton {
 
-    private boolean isLastButton;
-    private int x,y,id,index;
+    private boolean isLastButton, isLastMoved;
+    private int i,j,id,index;
 
-    public Tile(int id) {
+    public Tile(int id, int i, int j) {
         super();
-        this.id=this.index=id;
+        this.id=id;
+        this.i=i;
+        this.j=j;
         initUI();
     }
 
@@ -34,15 +36,11 @@ class Tile extends JButton {
 
         initUI();
     }
-    
-    public Tile(int x,int y){
-        this.x=x;
-        this.y=y;
-    }
 
     private void initUI() {
 
         isLastButton = false;
+        isLastMoved = false;
         BorderFactory.createLineBorder(Color.gray);
 
         addMouseListener(new MouseAdapter() {
@@ -63,11 +61,11 @@ class Tile extends JButton {
 
     public void setLastButton() {
         
-        isLastButton = true;
+        this.isLastButton = true;
     }
 
     public void setNoLastButton(){
-        isLastButton = false;
+        this.isLastButton = false;
     }
     
     public boolean isLastButton() {
@@ -79,13 +77,28 @@ class Tile extends JButton {
         return id;
     }
     
-    public void updateIndex(int index){
-        this.index=index;
+    public void updateIndex(int ind){
+        this.index=ind;
     }
 
     public int getIndex() {
         return index;
     }
-    
+
+    public boolean isLastMoved() {
+        return isLastMoved;
+    }
+
+    public void setIsLastMoved(boolean isLastMoved) {
+        this.isLastMoved = isLastMoved;
+    }
+
+    public final int getI() {
+        return i;
+    }
+
+    public final int getJ() {
+        return j;
+    }
     
 }
