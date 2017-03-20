@@ -33,6 +33,18 @@ public class Puzzle {
         this.rows=rows;
     }
     
+    public void reinitialize(){
+        int counter=0;
+        for(int i=0;i<=3;i++){
+            for(int j=0;j<=3;j++){
+                tileSet[i][j]=new Tile(counter, i,j);
+                if(counter==15){
+                    tileSet[i][j].setLastButton();
+                }
+                counter++;
+            }
+        }
+    }
     
     public void initialState(){
         int counter=0;
@@ -46,12 +58,6 @@ public class Puzzle {
                 counter++;
             }
         }
-        
-        
-        /*for(int i=0;i<=15;i++){
-            initialState.add(new Tile(i,i));
-        }
-        state=initialState;*/
     }
     
     public Tile[][] getState(){

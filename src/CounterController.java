@@ -27,6 +27,10 @@ public class CounterController {
         movesCounter+=1;
     }
     
+    public void initializeCounter(){
+        movesCounter=0;
+    }
+    
     
     
     
