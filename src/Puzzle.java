@@ -3,6 +3,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,13 +16,14 @@ import java.util.Random;
  * @author Dell
  */
 public class Puzzle {
-    private ArrayList initialState = new ArrayList();
-    private ArrayList state = new ArrayList();
     //Movements will be applied on the state list
-    private final int columns, rows, movesForShuffle=20;
+    private final int columns, rows, movesForShuffle=6;
     Tile[][] tileSet;
     int[] positions = {-1,-1,1,1};
     int[] lastPositionMoved = {3,3};
+    int[][] initialState;
+    ArrayList movementsLog = new ArrayList();
+    //private ImageController imagecontroller = new ImageController(); 
     
     
     public Puzzle(){
@@ -34,6 +36,7 @@ public class Puzzle {
     }
     
     public void reinitialize(){
+        solve();
         int counter=0;
         for(int i=0;i<=3;i++){
             for(int j=0;j<=3;j++){
@@ -47,6 +50,9 @@ public class Puzzle {
     }
     
     public void initialState(){
+        String lastPosition=3+"|"+3;
+        movementsLog.add(lastPosition);
+        initialState = new int[4][4];
         int counter=0;
         tileSet = new Tile[4][4];
         for(int i=0;i<=3;i++){
@@ -55,17 +61,19 @@ public class Puzzle {
                 if(counter==15){
                     tileSet[i][j].setLastButton();
                 }
+                initialState[i][j]=counter;
                 counter++;
             }
         }
     }
     
+    public int[][] getInitialState(){
+        return initialState;
+    }
+    
+    
     public Tile[][] getState(){
         return tileSet;
-    }
-
-    public ArrayList getInitialState() {
-        return initialState;
     }
     
     public void checkMovement(int i, int j){
@@ -112,7 +120,6 @@ public class Puzzle {
             System.out.println("");
         }
         
-        System.out.println(lastPositionMoved[0] + " " + lastPositionMoved[1]);
     }
     
     public void setState(Tile[][] state){
@@ -130,7 +137,6 @@ public class Puzzle {
                     tileSet[i+positions[k]][j]=tileSet[i][j];
                     tileSet[i][j]=tile;
                     setLastPositionMoved(i,j);
-                    printPuzzleState();
                 }
                 break;
             case 1:
@@ -141,7 +147,6 @@ public class Puzzle {
                     tileSet[i][j+positions[k]]=tileSet[i][j];
                     tileSet[i][j]=tile;
                     setLastPositionMoved(i,j);
-                    printPuzzleState();
                 }
                 break;
             case 2:
@@ -152,7 +157,6 @@ public class Puzzle {
                     tileSet[i+positions[k]][j]=tileSet[i][j];
                     tileSet[i][j]=tile;
                     setLastPositionMoved(i,j);
-                    printPuzzleState();
                 }
                 break; 
             case 3:
@@ -163,7 +167,6 @@ public class Puzzle {
                     tileSet[i][j+positions[k]]=tileSet[i][j];
                     tileSet[i][j]=tile;
                     setLastPositionMoved(i,j);
-                    printPuzzleState();
                 }
                 break;
         }
@@ -176,6 +179,8 @@ public class Puzzle {
     public void setLastPositionMoved(int i, int j) {
         lastPositionMoved[0]=i;
         lastPositionMoved[1]=j;
+        String lastPosition=i+"|"+j;
+        movementsLog.add(lastPosition);
     }
     
     public void shuffle(){
@@ -188,7 +193,6 @@ public class Puzzle {
             }else{flag=1;}
             
             random=generateRandom(2);
-            System.out.println(random);
             if(random==0){
                 selectedI=lastPositionMoved[0]+flag;
                 selectedJ=lastPositionMoved[1];
@@ -208,13 +212,37 @@ public class Puzzle {
         }
     }
     
-    public int generateRandom(int maxbound){
+    public boolean checkSolution(Tile[][] currentState){
+        for(int i=0;i<=3;i++){
+            for(int j=0;j<=3;j++){
+                if(currentState[i][j].getId()!=initialState[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    private int generateRandom(int maxbound){
         Random randomgenerator = new Random();
         int random = randomgenerator.nextInt(maxbound);
         return random;
     }
     
-    public boolean selectedInsideBounds(int i, int j){
+    private boolean selectedInsideBounds(int i, int j){
         return i<=3 && i>=0 && j<=3 && j>=0;
+    }
+    
+    public void solve(){
+        int i,j;
+        for(int k=movementsLog.size()-2;k>=0;k--){
+            StringTokenizer strtk = new StringTokenizer(movementsLog.get(k).toString(),"|");
+            i=Integer.parseInt(strtk.nextToken());
+            j=Integer.parseInt(strtk.nextToken());
+            System.out.println(i + " " + j);
+            checkMovement(i,j);
+        }
+        
+        
     }
 }

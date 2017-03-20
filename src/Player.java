@@ -21,9 +21,6 @@ public class Player {
         return movementsLog;
     }
     
-    public void saveMovement(Move movement){
-        movementsLog.add(movement);
-    }
     
     
    

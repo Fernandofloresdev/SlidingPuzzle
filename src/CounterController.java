@@ -31,7 +31,4 @@ public class CounterController {
         movesCounter=0;
     }
     
-    
-    
-    
 }
