@@ -122,7 +122,6 @@ public class GUI extends javax.swing.JFrame {
         getjPanel1().removeAll();
         getjLabel2().setText(Integer.toString(countercontroller.getMovesCounter()));
         setButtonsListeners();
-        System.out.println("solve");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

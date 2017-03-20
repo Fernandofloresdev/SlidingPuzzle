@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
  */
 public class Puzzle {
     //Movements will be applied on the state list
-    private final int columns, rows, movesForShuffle=6;
+    private final int columns, rows, movesForShuffle=20;
     Tile[][] tileSet;
     int[] positions = {-1,-1,1,1};
     int[] lastPositionMoved = {3,3};
@@ -239,7 +239,6 @@ public class Puzzle {
             StringTokenizer strtk = new StringTokenizer(movementsLog.get(k).toString(),"|");
             i=Integer.parseInt(strtk.nextToken());
             j=Integer.parseInt(strtk.nextToken());
-            System.out.println(i + " " + j);
             checkMovement(i,j);
         }
         
