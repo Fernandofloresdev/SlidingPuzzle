@@ -8,43 +8,20 @@
  *
  * @author Fernando
  */
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.CropImageFilter;
-import java.awt.image.FilteredImageSource;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-
-
-
 
 public class ImageController {
     private BufferedImage source;
     private int width, height,cropwidth,cropheight;
-    private final int DESIRED_WIDTH = 600;
+    private final int DESIRED_WIDTH = 300;
     private BufferedImage resized;
     
     public ImageController() throws URISyntaxException{
@@ -107,7 +84,7 @@ public class ImageController {
     }
     
     public Image getCroppedImage(int i, int j){
-        Image croppedImageSlice = resized.getSubimage(cropwidth*i, cropheight*j, cropwidth,cropheight);
+        Image croppedImageSlice = resized.getSubimage(cropwidth*j, cropheight*i, cropwidth,cropheight);
         return croppedImageSlice;
     }
         

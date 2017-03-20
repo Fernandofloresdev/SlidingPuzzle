@@ -1,5 +1,6 @@
 
 import java.awt.Point;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -23,14 +24,16 @@ public class Puzzle {
     int[] lastPositionMoved = {3,3};
     int[][] initialState;
     ArrayList movementsLog = new ArrayList();
-    //private ImageController imagecontroller = new ImageController(); 
+    private ImageController imagecontroller; 
     
     
-    public Puzzle(){
+    public Puzzle() throws URISyntaxException{
+        this.imagecontroller = new ImageController();
         this.columns = this.rows = 4;
     }
     
-    public Puzzle(int columns, int rows){
+    public Puzzle(int columns, int rows) throws URISyntaxException{
+        this.imagecontroller = new ImageController();
         this.columns=columns;
         this.rows=rows;
     }
@@ -40,7 +43,7 @@ public class Puzzle {
         int counter=0;
         for(int i=0;i<=3;i++){
             for(int j=0;j<=3;j++){
-                tileSet[i][j]=new Tile(counter, i,j);
+                tileSet[i][j]=new Tile(counter, i,j,imagecontroller.getCroppedImage(i, j));
                 if(counter==15){
                     tileSet[i][j].setLastButton();
                 }
@@ -57,7 +60,7 @@ public class Puzzle {
         tileSet = new Tile[4][4];
         for(int i=0;i<=3;i++){
             for(int j=0;j<=3;j++){
-                tileSet[i][j]=new Tile(counter, i,j);
+                tileSet[i][j]=new Tile(counter, i,j,imagecontroller.getCroppedImage(i, j));
                 if(counter==15){
                     tileSet[i][j].setLastButton();
                 }

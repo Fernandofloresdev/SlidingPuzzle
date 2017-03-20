@@ -1,9 +1,14 @@
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.net.URISyntaxException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 
 
 /*
@@ -17,15 +22,16 @@ import javax.swing.JPanel;
  */
 public class GUI extends javax.swing.JFrame {
 
-    private int width, height;
-    private final int DESIRED_WIDTH = 600;
-    private final GameController gamecontroller = new GameController();
+    private final int width = 440;
+    private final int height = 660;
+    private final GameController gamecontroller;
     private final CounterController countercontroller = new CounterController();
 
     /**
      * Creates new form GUI
      */
-    public GUI() {
+    public GUI() throws URISyntaxException {
+        this.gamecontroller = new GameController();
         initComponents();
         initAssets();
 
@@ -112,8 +118,12 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        gamecontroller.startNewGame();
+        try {
+            // TODO add your handling code here:
+            gamecontroller.startNewGame();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         newGame();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -157,8 +167,16 @@ public class GUI extends javax.swing.JFrame {
         boolean playing = true;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new GUI().setVisible(true);
+                GUI gui =null;
+                try{
+                    gui = new GUI();
+                    gui.setVisible(true);
+                } catch (URISyntaxException ex){
+                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
         });
     }
@@ -173,7 +191,7 @@ public class GUI extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void initAssets() {
-        setSize(460, 250);
+        setSize(width, height);
         setTitle("Puzzle");
         //setResizable(false);
         setLocationRelativeTo(null);
@@ -239,15 +257,17 @@ public class GUI extends javax.swing.JFrame {
                     for (ActionListener al : puzzleState[i][j].getActionListeners()) {
                         puzzleState[i][j].removeActionListener(al);
                     }
-
+                    puzzleState[i][j].setBorderPainted(false);    
                     puzzleState[i][j].setContentAreaFilled(false);
+                    puzzleState[i][j].setBorder(BorderFactory.createLineBorder(Color.gray));
                 } else {
                     for (ActionListener al : puzzleState[i][j].getActionListeners()) {
                         puzzleState[i][j].removeActionListener(al);
                     }
                     int iposition = i;
                     int jposition = j;
-                    puzzleState[i][j].setText(Integer.toString(puzzleState[i][j].getId()));
+                    //puzzleState[i][j].setText(Integer.toString(puzzleState[i][j].getId()));
+                    puzzleState[i][j].setFocusable(false);
                     puzzleState[i][j].addActionListener(new java.awt.event.ActionListener() {
                         @Override
                         public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -1,4 +1,5 @@
 
+import java.net.URISyntaxException;
 import javax.swing.JOptionPane;
 
 /*
@@ -16,11 +17,11 @@ public class GameController {
     private int gameResult;
     Puzzle puzzle;
 
-    public GameController(){
+    public GameController() throws URISyntaxException{
         onGameInit();
     }
     
-    public void onGameInit(){
+    public void onGameInit() throws URISyntaxException{
         puzzle = new Puzzle();
         puzzle.initialState();
         gameState=true;
@@ -35,7 +36,7 @@ public class GameController {
         return gameResult;
     }
     
-    public void startNewGame(){
+    public void startNewGame() throws URISyntaxException{
         onGameInit();
     }
     
