@@ -9,7 +9,6 @@ import javax.swing.JPanel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Fernando
@@ -19,14 +18,15 @@ public class GUI extends javax.swing.JFrame {
     private int width, height;
     private final int DESIRED_WIDTH = 600;
     private GameController gamecontroller = new GameController();
-    private CounterController countercontroller= new CounterController();
+    private CounterController countercontroller = new CounterController();
+
     /**
      * Creates new form GUI
      */
     public GUI() {
         initComponents();
         initAssets();
-        
+
     }
 
     /**
@@ -135,47 +135,78 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    
     private void initAssets() {
-        setSize(400,250);
+        setSize(400, 250);
         setTitle("Puzzle");
         //setResizable(false);
         setLocationRelativeTo(null);
         getjLabel1().setText("Moves:");
         getjLabel2().setText(Integer.toString(countercontroller.getMovesCounter()));
         Tile[][] puzzleState = gamecontroller.getPuzzle().getState();
-        
-        
+        gamecontroller.getPuzzle().shuffle();
         //sets the buttons on its place 
-        for(int i=0;i<=3;i++){
-            for(int j=0;j<=3;j++){
-                
-                if(i==3&&j==3){
-                    puzzleState[i][j].setLastButton();
-                    puzzleState[i][j].setContentAreaFilled(false);
-                }else{
-                    puzzleState[i][j].setText(Integer.toString(puzzleState[i][j].getId()));
-                    int iposition = i;
-                    int jposition= j;
-                    puzzleState[i][j].addActionListener(new java.awt.event.ActionListener() {
-                            @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    gamecontroller.getPuzzle().checkMovement(iposition,jposition);
-                    if(puzzleState[iposition][jposition].isLastButton()){
-                        countercontroller.increaseCounter();
+        
+        
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j <= 3; j++) {
+                if (puzzleState[i][j].isLastButton()) {
+                    for (ActionListener al : puzzleState[i][j].getActionListeners()) {
+                        puzzleState[i][j].removeActionListener(al);
                     }
-                    update();
+
+                    puzzleState[i][j].setContentAreaFilled(false);
+                } else {
+                    for (ActionListener al : puzzleState[i][j].getActionListeners()) {
+                        puzzleState[i][j].removeActionListener(al);
+                    }
+                    int iposition = i;
+                    int jposition = j;
+                    puzzleState[i][j].setText(Integer.toString(puzzleState[i][j].getId()));
+                    puzzleState[i][j].addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            gamecontroller.getPuzzle().checkMovement(iposition, jposition);
+                            if (puzzleState[iposition][jposition].isLastButton()) {
+                                countercontroller.increaseCounter();
+                            }
+                            update();
+                        }
+                    });
                 }
-            });
-                }
-                
-            getjPanel1().add(puzzleState[i][j]);
+
+                getjPanel1().add(puzzleState[i][j]);
             }
         }
+
         getjPanel1().validate();
+        /*for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j <= 3; j++) {
+
+                if (i == 3 && j == 3) {
+                    puzzleState[i][j].setLastButton();
+                    puzzleState[i][j].setContentAreaFilled(false);
+                } else {
+                    puzzleState[i][j].setText(Integer.toString(puzzleState[i][j].getId()));
+                    int iposition = i;
+                    int jposition = j;
+                    puzzleState[i][j].addActionListener(new java.awt.event.ActionListener() {
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            gamecontroller.getPuzzle().checkMovement(iposition, jposition);
+                            if (puzzleState[iposition][jposition].isLastButton()) {
+                                countercontroller.increaseCounter();
+                            }
+                            update();
+                        }
+                    });
+                }
+
+                getjPanel1().add(puzzleState[i][j]);
+            }
         }
-    
-    
+        getjPanel1().validate();*/
+    }
+
     public JPanel getjPanel1() {
         return jPanel1;
     }
@@ -187,98 +218,97 @@ public class GUI extends javax.swing.JFrame {
     public JLabel getjLabel2() {
         return jLabel2;
     }
-    
-    
-    public void displayBoard(){
-        
+
+    public void displayBoard() {
+
     }
-    
-    public void displaySolution(){
-        
+
+    public void displaySolution() {
+
     }
-    
-    public void displayInitialState(){
-        
+
+    public void displayInitialState() {
+
     }
-    
-    public void update(){
+
+    public void update() {
         Tile[][] puzzleState = gamecontroller.getPuzzle().getState();
         int[] lastPositionMoved = gamecontroller.getPuzzle().getLastPositionMoved();
         int lastPositioni = lastPositionMoved[0];
         int lastPositionj = lastPositionMoved[1];
-        
+
         //sets the buttons on its place 
         getjPanel1().removeAll();
         getjLabel2().setText(Integer.toString(countercontroller.getMovesCounter()));
-        for(int i=0;i<=3;i++){
-            for(int j=0;j<=3;j++){
-                
-                if(puzzleState[i][j].isLastButton()){
-                    for( ActionListener al : puzzleState[i][j].getActionListeners() ) {
-                        puzzleState[i][j].removeActionListener( al );
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j <= 3; j++) {
+
+                if (puzzleState[i][j].isLastButton()) {
+                    for (ActionListener al : puzzleState[i][j].getActionListeners()) {
+                        puzzleState[i][j].removeActionListener(al);
                     }
-                    
+
                     puzzleState[i][j].setContentAreaFilled(false);
-                }else{
-                    for( ActionListener al : puzzleState[i][j].getActionListeners() ) {
-                        puzzleState[i][j].removeActionListener( al );
+                } else {
+                    for (ActionListener al : puzzleState[i][j].getActionListeners()) {
+                        puzzleState[i][j].removeActionListener(al);
                     }
                     int iposition = i;
-                    int jposition= j;
+                    int jposition = j;
                     puzzleState[i][j].setText(Integer.toString(puzzleState[i][j].getId()));
                     puzzleState[i][j].addActionListener(new java.awt.event.ActionListener() {
-                            @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    gamecontroller.getPuzzle().checkMovement(iposition,jposition);
-                    if(puzzleState[iposition][jposition].isLastButton()){
-                        countercontroller.increaseCounter();
-                    }
-                    update();
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            gamecontroller.getPuzzle().checkMovement(iposition, jposition);
+                            if (puzzleState[iposition][jposition].isLastButton()) {
+                                countercontroller.increaseCounter();
+                            }
+                            update();
+                        }
+                    });
                 }
-            });
-                }
-                
-            getjPanel1().add(puzzleState[i][j]);
+
+                getjPanel1().add(puzzleState[i][j]);
             }
         }
-        
+
         getjPanel1().validate();
-        
-        }
-    
-    public void newGame(){
+
+    }
+
+    public void newGame() {
         Tile[][] puzzleState = gamecontroller.getPuzzle().getState();
         getjPanel1().removeAll();
         //sets the buttons on its place 
         getjLabel2().remove(this);
         getjLabel2().setText(Integer.toString(countercontroller.getMovesCounter()));
-        for(int i=0;i<=3;i++){
-            for(int j=0;j<=3;j++){
-                
-                if(i==3&&j==3){
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j <= 3; j++) {
+
+                if (i == 3 && j == 3) {
                     puzzleState[i][j].setLastButton();
                     puzzleState[i][j].setContentAreaFilled(false);
-                }else{
+                } else {
                     puzzleState[i][j].setText(Integer.toString(puzzleState[i][j].getId()));
                     int iposition = i;
-                    int jposition= j;
+                    int jposition = j;
                     puzzleState[i][j].addActionListener(new java.awt.event.ActionListener() {
-                            @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    gamecontroller.getPuzzle().checkMovement(iposition,jposition);
-                    if(puzzleState[iposition][jposition].isLastButton()){
-                        countercontroller.increaseCounter();
-                    }
-                    update();
+                        @Override
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                            gamecontroller.getPuzzle().checkMovement(iposition, jposition);
+                            if (puzzleState[iposition][jposition].isLastButton()) {
+                                countercontroller.increaseCounter();
+                            }
+                            update();
+                        }
+                    });
                 }
-            });
-                }
-                
-            getjPanel1().add(puzzleState[i][j]);
+
+                getjPanel1().add(puzzleState[i][j]);
             }
         }
         countercontroller.increaseCounter();
         getjPanel1().validate();
     }
-    
+
 }
