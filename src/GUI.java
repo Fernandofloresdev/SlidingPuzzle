@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.net.URISyntaxException;
 import javax.swing.JButton;
@@ -9,6 +10,7 @@ import javax.swing.JPanel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.UIDefaults;
 
 
 /*
@@ -143,10 +145,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -163,7 +162,8 @@ public class GUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        
+        
         boolean playing = true;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -251,6 +251,7 @@ public class GUI extends javax.swing.JFrame {
         
         Tile[][] puzzleState = gamecontroller.getPuzzle().getState();
         
+        
         for (int i = 0; i <= 3; i++) {
             for (int j = 0; j <= 3; j++) {
                 if (puzzleState[i][j].isLastButton()) {
@@ -259,15 +260,13 @@ public class GUI extends javax.swing.JFrame {
                     }
                     puzzleState[i][j].setBorderPainted(false);    
                     puzzleState[i][j].setContentAreaFilled(false);
-                    puzzleState[i][j].setBorder(BorderFactory.createLineBorder(Color.gray));
+                    //puzzleState[i][j].setBorder(BorderFactory.createLineBorder(Color.gray));
                 } else {
                     for (ActionListener al : puzzleState[i][j].getActionListeners()) {
                         puzzleState[i][j].removeActionListener(al);
                     }
                     int iposition = i;
                     int jposition = j;
-                    //puzzleState[i][j].setText(Integer.toString(puzzleState[i][j].getId()));
-                    puzzleState[i][j].setFocusable(false);
                     puzzleState[i][j].addActionListener(new java.awt.event.ActionListener() {
                         @Override
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
